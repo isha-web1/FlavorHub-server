@@ -30,6 +30,8 @@ async function run() {
 
 
     const menuCollection = client.db("FlavorHub").collection("menu");
+    const reviewCollection = client.db("FlavorHub").collection("reviews");
+    const cartCollection = client.db("FlavorHub").collection("carts");
 
     // get menu data
     app.get('/menu', async (req, res) => {
@@ -37,6 +39,20 @@ async function run() {
         res.send(result);
       })
 
+    //   get review data
+
+    app.get('/reviews', async (req, res) => {
+        const result = await reviewCollection.find().toArray();
+        res.send(result);
+      })
+ 
+      // cart collection
+
+      app.post('/carts', async (req,res) =>{
+        const cartItem = req.body;
+        const result = await cartCollection.insertOne(cartItem);
+        res.send(result);
+      })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
